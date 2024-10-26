@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <link rel="stylesheet" href="verify_styles/styles.css">
+</head>
+<body>
+    <div class="container">
+        <img src="assets/verification.png" alt="Verify Email" class="verify-icon">
+        <h1>OTP Verification</h1>
+        <p>Please enter the 6-digit OTP sent to your email.</p>
+        
+        <div class="otp-inputs">
+            <input type="text" class="otp" maxlength="1" oninput="moveToNext(this, 1)" />
+            <input type="text" class="otp" maxlength="1" oninput="moveToNext(this, 2)" />
+            <input type="text" class="otp" maxlength="1" oninput="moveToNext(this, 3)" />
+            <input type="text" class="otp" maxlength="1" oninput="moveToNext(this, 4)" />
+            <input type="text" class="otp" maxlength="1" oninput="moveToNext(this, 5)" />
+            <input type="text" class="otp" maxlength="1" oninput="moveToNext(this, 6)" />
+        </div>
+        
+        <button id="verifyButton" disabled>Verify OTP</button>
+        <button id="sendCodeButton">Send Verification Code</button>
+        
+        <div id="timer">Time left: <span id="time">05:00</span></div>
+        
+        <!-- Notification Popup -->
+        <div id="notification" class="notification"></div>
+    </div>
+
+    <script src="verify_script/script.js"></script>
+</body>
+</html>

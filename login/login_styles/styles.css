@@ -1,0 +1,256 @@
+/* Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f6f5f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    width: 900px;
+    max-width: 100%;
+    min-height: 550px;
+    position: relative;
+    overflow: hidden;
+}
+
+.form-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    padding: 50px;
+    transition: all 0.6s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+
+input {
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 300px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.signup-button {
+    background-color: #ff416c;
+}
+
+.signin-button {
+    background-color: #007bff;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+/* Overlay Styling */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, #ff4b2b, #ff416c);
+    color: white;
+    transition: transform 0.6s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+}
+
+.overlay-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 40px;
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay-center {
+    transform: translateX(0);
+}
+
+/* Ghost Button Styling */
+.ghost {
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 10px 30px;
+    transition: background-color 0.3s ease-in-out;
+    width: 100%;
+    max-width: 200px;
+}
+
+.ghost:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Form Transitioning */
+.container.active .form-container {
+    transform: translateX(100%);
+}
+
+.container.active .overlay {
+    transform: translateX(-100%);
+}
+
+.container.active .overlay-center {
+    transform: translateX(0);
+}
+
+#signUpForm,
+#signInForm {
+    position: absolute;
+    width: 100%;
+    transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+}
+
+#signUpForm {
+    opacity: 1;
+    visibility: visible;
+}
+
+#signInForm {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.container.active #signUpForm {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.container.active #signInForm {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Welcome Message Styling */
+.welcome-message {
+    opacity: 0; /* Hide by default */
+    transition: opacity 0.6s ease-in-out; /* Transition for fading */
+    margin-top: 20px;
+}
+
+#signUpForm .welcome-message {
+    opacity: 1; /* Show welcome message for sign-up */
+}
+
+.container.active #signUpForm .welcome-message {
+    opacity: 0; /* Hide welcome message for sign-up in active state */
+}
+
+.container.active #signInForm .welcome-message {
+    opacity: 1; /* Show welcome message for sign-in in active state */
+}
+
+/* Styles for the image above the button */
+.toggle-image {
+    width: 100px; /* Adjust the width to your liking */
+    margin-bottom: 20px; /* Space between image and button */
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        min-height: 600px;
+    }
+    .form-container {
+        width: 100%;
+        height: auto; 
+        padding: 20px;
+        position: static; 
+    }
+    .form {
+        flex-direction: column;
+        justify-content: center;
+    }
+    .overlay {
+        width: 100%;
+        height: auto;
+        position: relative;
+        top: unset;
+        left: unset;
+    }
+    .overlay-panel {
+        width: 100%;
+        padding: 40px 20px;
+    }
+    .overlay-center {
+        transform: translateX(0);
+    }
+    .container.active .form-container {
+        transform: none;
+        width: 100%;
+    }
+    .form-container {
+        transform: none;
+        width: 100%;
+    }
+    button {
+        margin-top: 20px;
+    }
+    #signUpForm, #signInForm {
+        position: relative;
+        width: 100%;
+    }
+    .overlay {
+        display: none; 
+    }
+
+    .ghost {
+        display: block;
+        margin-top: 20px;
+        position: relative;
+    }
+    .welcome-message + .ghost {
+        margin-top: 10px;
+    }
+}
