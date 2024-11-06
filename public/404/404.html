@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 Not Found - ShopNow</title>
+    <link rel="icon" href="assets/anl-team-removebg-preview (1).png" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.3/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @layer utilities {
+            .bg-gradient {
+                background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+            }
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gradient font-sans text-gray-900 fade-in">
+
+    <div class="min-h-screen flex flex-col items-center justify-center text-center px-6 md:px-4">
+        <div class="mb-6">
+            <img src="assets/no-results.png" alt="404 Error" class="w-20 h-20 md:w-24 md:h-24 mx-auto">
+        </div>
+        
+        <h1 class="text-3xl md:text-4xl font-bold text-indigo-600">Oops! Page Not Found</h1>
+        <p class="mt-2 text-gray-700 text-lg md:text-xl">It looks like the page you're looking for doesn't exist.</p>
+        
+        <!-- Home Button -->
+        <a href="/" class="mt-6 inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none transition duration-300 ease-in-out">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7m-9 3v10m4 0v-6m4 6v-10m-2 10v-6"></path>
+            </svg>
+            Back to Homepage
+        </a>
+
+        <footer class="w-full bg-gradient py-12 mt-16">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 px-6 lg:px-0 text-center md:text-left text-gray-900">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">About ShopNow</h3>
+                    <p class="text-sm text-gray-700">ShopNow is your one-stop shop for all things you love. Enjoy seamless shopping with exclusive deals and a wide range of quality products.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Customer Service</h3>
+                    <ul>
+                        <li><a href="#" class="text-sm text-gray-700 hover:underline">Help Center</a></li>
+                        <li><a href="#" class="text-sm text-gray-700 hover:underline">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul>
+                        <li><a href="#" class="text-sm text-gray-700 hover:underline">Abount Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Stay Connected</h3>
+                    <div class="flex justify-center md:justify-start space-x-4">
+                        <a href="#" aria-label="Facebook" class="text-gray-700 hover:text-indigo-500">
+                            <img src="assets/facebook-app-symbol-removebg-preview.png" alt="Facebook" class="w-6 h-6">
+                        </a>
+                        <a href="#" aria-label="Twitter" class="text-gray-700 hover:text-indigo-500">
+                            <img src="assets/twitter-removebg-preview.png" alt="Twitter" class="w-6 h-6">
+                        </a>
+                        <a href="#" aria-label="Instagram" class="text-gray-700 hover:text-indigo-500">
+                            <img src="assets/instagram-removebg-preview.png" alt="Instagram" class="w-6 h-6">
+                        </a>
+                        <a href="#" aria-label="LinkedIn" class="text-gray-700 hover:text-indigo-500">
+                            <img src="assets/linkedin-removebg-preview.png" alt="LinkedIn" class="w-6 h-6">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 text-center text-sm text-gray-600">
+                &copy; 2024 ShopNow. All rights reserved.
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

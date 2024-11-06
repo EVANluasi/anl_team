@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log-in and Sign-up (ANL Team)</title>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.3/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .form-container {
+            transition: all 0.6s ease-in-out;
+        }
+        .overlay {
+            transition: transform 0.6s ease-in-out;
+        }
+        .overlay-panel {
+            transition: transform 0.6s ease-in-out;
+        }
+        #signUpForm, #signInForm {
+            transition: opacity 0.6s ease-in-out, visibility 0.6s ease-in-out;
+        }
+        .welcome-message {
+            transition: opacity 0.6s ease-in-out;
+        }
+    </style>
+</head>
+<body class="font-sans bg-[#f6f5f7] flex justify-center items-center min-h-screen">
+    <div class="container bg-white rounded-lg shadow-2xl w-[900px] max-w-full min-h-[550px] relative overflow-hidden">
+        <div class="form-container absolute top-0 left-0 w-1/2 h-full p-12 flex justify-center items-center flex-col">
+            <!-- Sign Up Form -->
+            <div id="signUpForm" class="form absolute w-full opacity-100 visible flex flex-col justify-center items-center text-center">
+                <h2 class="text-2xl font-bold mb-4">Create Account</h2>
+                <form id="signUpFormElement" class="w-full max-w-[300px]">
+                    <input type="text" placeholder="Full Name" class="w-full p-3 rounded border border-gray-300 mb-4" required />
+                    <input type="email" placeholder="Email" class="w-full p-3 rounded border border-gray-300 mb-4" required />
+                    <input type="password" placeholder="Password" class="w-full p-3 rounded border border-gray-300 mb-4" required />
+                    <button type="submit" class="w-full bg-[#ff416c] text-white py-2 px-4 rounded-full text-base cursor-pointer hover:opacity-85 mt-5">Sign Up</button>
+                </form>
+                <div class="welcome-message mt-5">
+                    <h2 class="text-xl font-bold mb-2">Hello, Friend!</h2>
+                    <p class="text-gray-600">Enter your personal details and start your journey with us</p>
+                </div>
+            </div>
+
+            <!-- Sign In Form -->
+            <div id="signInForm" class="form absolute w-full opacity-0 invisible flex flex-col justify-center items-center text-center">
+                <h2 class="text-2xl font-bold mb-4">Sign In</h2>
+                <form id="signInFormElement" class="w-full max-w-[300px]">
+                    <input type="email" placeholder="Email" class="w-full p-3 rounded border border-gray-300 mb-4" required />
+                    <input type="password" placeholder="Password" class="w-full p-3 rounded border border-gray-300 mb-4" required />
+                    <button type="submit" class="w-full bg-[#007bff] text-white py-2 px-4 rounded-full text-base cursor-pointer hover:opacity-85 mt-5">Sign In</button>
+                </form>
+                <div class="welcome-message mt-5">
+                    <h2 class="text-xl font-bold mb-2">Welcome Back!</h2>
+                    <p class="text-gray-600">To keep connected, please login with your personal details</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="overlay absolute top-0 left-1/2 w-1/2 h-full bg-gradient-to-r from-[#ff4b2b] to-[#ff416c] text-white flex justify-center items-center rounded-3xl">
+            <div class="overlay-panel overlay-center flex flex-col justify-center items-center text-center px-10 absolute h-full w-1/2">
+                <img src="assets/login-form-icon-vector-removebg-preview.png" alt="Toggle Image" class="w-24 mb-5" />
+                <button class="ghost bg-transparent border-2 border-white rounded-full cursor-pointer text-sm py-2 px-8 w-full max-w-[200px] hover:bg-white/30 text-white" id="toggleButton">Transition</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const container = document.querySelector('.container');
+        const toggleButton = document.getElementById('toggleButton');
+        const signUpForm = document.getElementById('signUpForm');
+        const signInForm = document.getElementById('signInForm');
+
+        toggleButton.addEventListener('click', () => {
+            container.classList.toggle('active');
+            
+            if (container.classList.contains('active')) {
+                signUpForm.style.opacity = '0';
+                signUpForm.style.visibility = 'hidden';
+                signInForm.style.opacity = '1';
+                signInForm.style.visibility = 'visible';
+                document.querySelector('.form-container').style.transform = 'translateX(100%)';
+                document.querySelector('.overlay').style.transform = 'translateX(-100%)';
+            } else {
+                signUpForm.style.opacity = '1';
+                signUpForm.style.visibility = 'visible';
+                signInForm.style.opacity = '0';
+                signInForm.style.visibility = 'hidden';
+                document.querySelector('.form-container').style.transform = 'translateX(0)';
+                document.querySelector('.overlay').style.transform = 'translateX(0)';
+            }
+        });
+
+        const mediaQuery = window.matchMedia('(max-width: 768px)');
+        
+        function handleMobileLayout(e) {
+            if (e.matches) {
+                document.querySelector('.form-container').style.position = 'static';
+                document.querySelector('.form-container').style.width = '100%';
+                document.querySelector('.overlay').style.display = 'none';
+            } else {
+                document.querySelector('.form-container').style.position = 'absolute';
+                document.querySelector('.form-container').style.width = '50%';
+                document.querySelector('.overlay').style.display = 'flex';
+            }
+        }
+
+        mediaQuery.addListener(handleMobileLayout);
+        handleMobileLayout(mediaQuery);
+    </script>
+</body>
+</html>

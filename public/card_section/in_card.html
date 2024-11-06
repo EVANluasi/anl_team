@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail Page - Modern Shop</title>
+    <link rel="icon" href="assets/anl-team-removebg-preview (1).png" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.3/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @layer utilities {
+            .bg-gradient {
+                background: linear-gradient(135deg, #f6f8fd, #f0f4f8);
+            }
+
+            .glass-effect {
+                background: rgba(255, 255, 255, 0.7);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .custom-shadow {
+                box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+            }
+
+            /* Tilt Effect - Only on Desktop */
+            @media (min-width: 1024px) {
+                .tilt-card {
+                    transform-style: preserve-3d;
+                    transform: perspective(1000px);
+                }
+
+                .tilt-card-inner {
+                    transform-style: preserve-3d;
+                    transition: all 0.3s ease-out;
+                }
+
+                .shine-effect {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(
+                        125deg,
+                        rgba(255,255,255, 0) 0%,
+                        rgba(255,255,255, 0.2) 30%,
+                        rgba(255,255,255, 0.2) 70%,
+                        rgba(255,255,255, 0) 100%
+                    );
+                    opacity: 0;
+                    transition: opacity 0.3s ease-out;
+                    pointer-events: none;
+                }
+            }
+
+            /* Review Card Animation */
+            .review-card {
+                transition: transform 0.3s ease-out;
+            }
+
+            .review-card:hover {
+                transform: translateY(-4px);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient font-sans text-gray-900 min-h-screen">
+    <div class="container mx-auto py-10 px-4 sm:px-6 lg:px-8" x-data="productDetailPage()">
+        <!-- Product Section -->
+        <div class="bg-white rounded-2xl custom-shadow overflow-hidden mb-10">
+            <div class="flex flex-col lg:flex-row">
+                <div class="w-full lg:w-1/2 p-6 lg:p-8">
+                    <div class="tilt-card rounded-xl overflow-hidden relative" id="tiltCard">
+                        <div class="tilt-card-inner">
+                            <img src="assets/ASUS-ROG-PHONE-8-PRO-ANIME-VISION.jpg" alt="Product Image" 
+                                 class="w-full h-auto rounded-xl shadow-lg">
+                            <div class="shine-effect rounded-xl"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="w-full lg:w-1/2 p-6 lg:p-8">
+                    <h2 class="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">ROG Phone</h2>
+                    <div class="flex items-center mb-6">
+                        <div class="flex text-yellow-400">
+                            ★★★★★
+                        </div>
+                        <span class="ml-2 text-gray-600">(4.8/5)</span>
+                    </div>
+                    <p class="text-gray-600 text-lg mb-6">Experience premium quality with our latest product, designed for both style and functionality.</p>
+                    <p class="text-3xl font-bold text-gray-800 mb-8">$149.99</p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-center space-x-4">
+                            <button @click="quantity > 1 ? quantity-- : quantity = 1" 
+                                    class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
+                                <span class="text-2xl">-</span>
+                            </button>
+                            <input type="number" x-model="quantity" 
+                                   class="w-20 h-12 text-center border-none bg-gray-100 rounded-lg text-xl" readonly>
+                            <button @click="quantity++" 
+                                    class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
+                                <span class="text-2xl">+</span>
+                            </button>
+                        </div>
+
+                        <button class="w-full py-4 bg-indigo-600 text-white text-lg font-semibold rounded-xl border-2 border-indigo-600 hover:bg-white hover:text-indigo-600 transition-colors">
+                            Add to Cart
+                        </button>
+                        <button class="w-full py-4 bg-white text-indigo-600 text-lg font-semibold rounded-xl border-2 border-indigo-600 hover:bg-indigo-600 hover:text-white transition-colors">
+                            Buy Now
+                        </button>                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Features -->
+            <div class="p-6 lg:p-8 border-t border-gray-100">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="glass-effect p-6 rounded-xl">
+                        <h3 class="font-semibold mb-2">Premium Materials</h3>
+                        <p class="text-gray-600">Crafted with highest quality materials</p>
+                    </div>
+                    <div class="glass-effect p-6 rounded-xl">
+                        <h3 class="font-semibold mb-2">Color Options</h3>
+                        <p class="text-gray-600">Available in multiple colors</p>
+                    </div>
+                    <div class="glass-effect p-6 rounded-xl">
+                        <h3 class="font-semibold mb-2">Warranty</h3>
+                        <p class="text-gray-600">30-day money-back guarantee</p>
+                    </div>
+                    <div class="glass-effect p-6 rounded-xl">
+                        <h3 class="font-semibold mb-2">Free Shipping</h3>
+                        <p class="text-gray-600">On orders over $50</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reviews Section -->
+        <div class="bg-white rounded-2xl custom-shadow p-6 lg:p-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-8">Customer Reviews</h3>
+            
+            <div class="space-y-6 mb-10">
+                <template x-for="review in reviews" :key="review.id">
+                    <div class="review-card glass-effect p-6 rounded-xl">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xl">
+                                <span x-text="review.name.charAt(0).toUpperCase()"></span>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="font-semibold text-gray-800" x-text="review.name"></h4>
+                                <p class="text-sm text-gray-500" x-text="review.date"></p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600" x-text="review.comment"></p>
+                    </div>
+                </template>
+            </div>
+
+            <form @submit.prevent="submitReview" class="space-y-6">
+                <h4 class="text-xl font-semibold text-gray-800">Write a Review</h4>
+                <div class="space-y-4">
+                    <input type="text" 
+                           x-model="newReview.name" 
+                           placeholder="Your Name" 
+                           class="w-full p-4 rounded-xl bg-white border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-colors" 
+                           required>
+                    <textarea x-model="newReview.comment" 
+                              placeholder="Your Review" 
+                              class="w-full p-4 rounded-xl bg-white border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-colors h-32" 
+                              required></textarea>
+                    <button type="submit" 
+                            class="px-8 py-4 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition-colors">
+                        Submit Review
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="w-full bg-gradient py-12 mt-16">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 px-6 lg:px-0 text-center md:text-left text-gray-900">
+            <div>
+                <h3 class="text-lg font-semibold mb-4">About ShopNow</h3>
+                <p class="text-sm text-gray-700">ShopNow is your one-stop shop for all things you love. Enjoy seamless shopping with exclusive deals and a wide range of quality products.</p>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Customer Service</h3>
+                <ul>
+                    <li><a href="#" class="text-sm text-gray-700 hover:underline">Help Center</a></li>
+                    <li><a href="#" class="text-sm text-gray-700 hover:underline">Contact Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                <ul>
+                    <li><a href="#" class="text-sm text-gray-700 hover:underline">Abount Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Stay Connected</h3>
+                <div class="flex justify-center md:justify-start space-x-4">
+                    <a href="#" aria-label="Facebook" class="text-gray-700 hover:text-indigo-500">
+                        <img src="assets/facebook-app-symbol-removebg-preview.png" alt="Facebook" class="w-6 h-6">
+                    </a>
+                    <a href="#" aria-label="Twitter" class="text-gray-700 hover:text-indigo-500">
+                        <img src="assets/twitter-removebg-preview.png" alt="Twitter" class="w-6 h-6">
+                    </a>
+                    <a href="#" aria-label="Instagram" class="text-gray-700 hover:text-indigo-500">
+                        <img src="assets/instagram-removebg-preview.png" alt="Instagram" class="w-6 h-6">
+                    </a>
+                    <a href="#" aria-label="LinkedIn" class="text-gray-700 hover:text-indigo-500">
+                        <img src="assets/linkedin-removebg-preview.png" alt="LinkedIn" class="w-6 h-6">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="mt-8 text-center text-sm text-gray-600">
+            &copy; 2024 ShopNow. All rights reserved.
+        </div>
+    </footer>
+</div>
+
+    <script>
+        function productDetailPage() {
+            return {
+                quantity: 1,
+                reviews: [
+                    { 
+                        id: 1, 
+                        name: 'Anonim 1', 
+                        comment: 'Absolutely love this product! The quality exceeds expectations.', 
+                        date: '2024-10-30' 
+                    },
+                    { 
+                        id: 2, 
+                        name: 'Anonim 2', 
+                        comment: 'Great value for money. Would definitely recommend.', 
+                        date: '2024-10-29' 
+                    }
+                ],
+                newReview: { name: '', comment: '' },
+                submitReview() {
+                    if (this.newReview.name && this.newReview.comment) {
+                        this.reviews.unshift({
+                            id: this.reviews.length + 1,
+                            name: this.newReview.name,
+                            comment: this.newReview.comment,
+                            date: new Date().toLocaleDateString()
+                        });
+                        this.newReview.name = '';
+                        this.newReview.comment = '';
+                    }
+                }
+            };
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const card = document.getElementById('tiltCard');
+            const cardInner = card.querySelector('.tilt-card-inner');
+            const shine = card.querySelector('.shine-effect');
+            
+            const isMobile = window.matchMedia('(max-width: 1024px)').matches;
+            if (isMobile) return; 
+
+            let bounds;
+
+            function rotateToMouse(e) {
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+                const leftX = mouseX - bounds.x;
+                const topY = mouseY - bounds.y;
+                const center = {
+                    x: leftX - bounds.width / 2,
+                    y: topY - bounds.height / 2
+                }
+                
+                const MAX_ROTATION = 7; 
+                const rotateX = MAX_ROTATION * center.y / (bounds.height / 4);
+                const rotateY = -MAX_ROTATION * center.x / (bounds.width / 4);
+                
+                cardInner.style.transform = `
+                    rotateX(${rotateX}deg)
+                    rotateY(${rotateY}deg)
+                    scale3d(1.02, 1.02, 1.02)
+                `;
+                
+                shine.style.opacity = 0.2;
+            }
+
+            function resetTilt() {
+                cardInner.style.transform = `
+                    rotateX(0deg)
+                    rotateY(0deg)
+                    scale3d(1, 1, 1)
+                `;
+                shine.style.opacity = 0;
+            }
+
+            card.addEventListener('mouseenter', () => {
+                bounds = card.getBoundingClientRect();
+                document.addEventListener('mousemove', rotateToMouse);
+            });
+
+            card.addEventListener('mouseleave', () => {
+                document.removeEventListener('mousemove', rotateToMouse);
+                resetTilt();
+            });
+
+            window.addEventListener('resize', () => {
+                bounds = card.getBoundingClientRect();
+                if (window.matchMedia('(max-width: 1024px)').matches) {
+                    document.removeEventListener('mousemove', rotateToMouse);
+                    resetTilt();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

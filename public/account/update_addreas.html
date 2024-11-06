@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopNow - Update Address</title>
+    <link rel="icon" href="assets/anl-team-removebg-preview (1).png" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.3/dist/cdn.min.js" defer></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        @layer utilities {
+            .bg-gradient { background: linear-gradient(135deg, #e0f7fa, #e1bee7); }
+        }
+        .fade-in { opacity: 0; animation: fadeIn 1s ease-in-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        #map { width: 100%; height: 300px; border-radius: 8px; }
+    </style>
+</head>
+<body class="bg-gradient font-sans text-gray-900 fade-in">
+
+<div class="min-h-screen flex flex-col items-center pt-10" x-data="updateAddressPage()">
+    <!-- Header -->
+    <header class="w-full max-w-6xl flex justify-between items-center p-5 bg-white shadow-lg rounded-b-xl fixed top-0 z-10">
+        <div class="flex items-center space-x-3">
+            <img src="assets/anl-team-removebg-preview (1).png" alt="ShopNow Logo" class="w-12 h-12">
+            <span class="text-3xl font-bold text-indigo-600 hidden md:block">ShopNow</span>
+        </div>
+        <button class="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition" onclick="window.location.href='account-page.html'">Back to Account</button>
+    </header>
+
+    <!-- Update Address Section -->
+    <section class="w-full max-w-4xl mt-20 p-6 bg-white rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Update Your Address</h2>
+
+        <!-- Map Container -->
+        <div id="map" class="mb-6"></div>
+
+        <!-- Address Form -->
+        <form class="space-y-4" @submit.prevent="updateAddress">
+            <div class="flex flex-col">
+                <label for="address" class="text-sm font-medium text-gray-700">Address</label>
+                <input type="text" id="address" class="border border-gray-300 rounded-lg p-2" x-model="address" placeholder="Enter your address">
+            </div>
+            <div class="flex flex-col">
+                <label for="city" class="text-sm font-medium text-gray-700">City</label>
+                <input type="text" id="city" class="border border-gray-300 rounded-lg p-2" x-model="city" placeholder="Enter your city">
+            </div>
+            <div class="flex flex-col">
+                <label for="postal" class="text-sm font-medium text-gray-700">Postal Code</label>
+                <input type="text" id="postal" class="border border-gray-300 rounded-lg p-2" x-model="postal" placeholder="Enter postal code">
+            </div>
+            <div class="flex justify-between">
+                <button type="submit" class="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition">
+                    Save Address
+                </button>
+                <button type="button" @click="removeMarker" class="ml-4 w-1/4 px-4 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition" x-show="marker">
+                    Remove Marker
+                </button>
+            </div>
+        </form>
+    </section>
+</div>
+
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('updateAddressPage', () => ({
+            address: '',
+            city: '',
+            postal: '',
+            marker: null, 
+            setAddress(lat, lng) {
+                this.address = `Lat: ${lat}, Lng: ${lng}`; 
+                this.city = 'Your City'; 
+                this.postal = '12345'; 
+            },
+            removeMarker() {
+                if (this.marker) {
+                    this.marker.remove(); 
+                    this.marker = null; 
+                    this.address = ''; 
+                    this.city = ''; 
+                    this.postal = ''; 
+                }
+            },
+            updateAddress() {
+                alert(`Address: ${this.address}, City: ${this.city}, Postal Code: ${this.postal}`);
+            }
+        }));
+    });
+
+    function initMap() {
+        const mapContainer = document.getElementById("map");
+        const map = L.map(mapContainer).setView([51.505, -0.09], 15); // Default to London
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const userLocation = [position.coords.latitude, position.coords.longitude];
+
+                map.setView(userLocation, 15);
+
+                L.marker(userLocation).addTo(map).bindPopup("Your Location").openPopup();
+            }, () => {
+                alert("Geolocation failed. Please check location settings.");
+            });
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+
+        map.on('click', function(e) {
+            const lat = e.latlng.lat;
+            const lng = e.latlng.lng;
+
+            const updateAddress = Alpine.store('updateAddressPage');
+            if (updateAddress.marker) {
+                updateAddress.marker.remove();
+            }
+
+           updateAddress.marker = L.marker([lat, lng]).addTo(map).bindPopup("Selected Location").openPopup();
+
+            updateAddress.setAddress(lat, lng);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", initMap);
+</script>
+</body>
+</html>

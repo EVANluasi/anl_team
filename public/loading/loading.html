@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to ShopNow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .fade-out {
+            animation: fadeOut 1s ease-in-out forwards;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { 
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-purple-100 via-blue-100 to-indigo-100 h-screen flex items-center justify-center relative overflow-hidden"
+      x-data="{ loadingProgress: 0 }"
+      x-init="
+          const interval = setInterval(() => {
+              if (loadingProgress < 100) {
+                  loadingProgress += 1;
+              } else {
+                  clearInterval(interval);
+                  setTimeout(() => { window.location.href = '/public/home/home.html'; }, 500);
+              }
+          }, 30);
+      ">
+
+   <div id="particles-js"></div>
+
+    <div class="text-center p-8 bg-white bg-opacity-30 backdrop-blur-lg rounded-lg shadow-lg z-10 transition-opacity duration-1000 ease-in-out"
+         :class="{ 'fade-out': loadingProgress === 100 }">
+        <img src="assets/anl-team-removebg-preview (1).png" alt="ShopNow Logo" class="w-24 h-24 mx-auto mb-4" />
+        
+        <h1 class="text-4xl font-semibold text-indigo-600 mb-2">Welcome to ShopNow</h1>
+        <p class="text-gray-600 text-lg">Preparing your shopping experience...</p>
+        
+        <div class="relative mt-6 w-48 h-2 bg-gray-200 rounded-full mx-auto overflow-hidden">
+            <div class="absolute h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"
+                 :style="{ width: loadingProgress + '%' }"></div>
+        </div>
+
+        <!-- Loading Percentage Text -->
+        <p class="text-gray-600 mt-2 text-sm" x-text="loadingProgress + '%'"></p>
+    </div>
+
+    <script>
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 60, density: { enable: true, value_area: 800 } },
+                color: { value: '#4f46e5' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5, random: false },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#4f46e5',
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: 'none',
+                    random: false,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: { enable: true, mode: 'repulse' },
+                    onclick: { enable: true, mode: 'push' },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
+    </script>
+</body>
+</html>

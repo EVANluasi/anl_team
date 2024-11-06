@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center - ShopNow</title>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.3/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .bg-gradient {
+            background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+        }
+        .hover-card {
+            transition: all 0.3s ease;
+        }
+        .hover-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+        }
+        .quiz-option {
+            transition: all 0.2s ease;
+        }
+        .quiz-option:hover {
+            background-color: #e0f2fe;
+            transform: scale(1.01);
+        }
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gradient font-sans text-gray-900">
+    <div class="min-h-screen flex flex-col items-center pt-10">
+        <header class="w-full max-w-6xl flex justify-between items-center p-5 bg-white shadow-lg rounded-b-xl fixed top-0 z-10">
+            <div class="flex items-center space-x-3">
+                <img src="assets/anl-team-removebg-preview (1).png" alt="ShopNow Logo" class="w-12 h-12">
+                <span class="text-3xl font-bold text-indigo-600 hidden md:block">ShopNow</span>
+            </div>
+            <button class="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition" @click="goHome()">Home</button>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-4 pt-20 py-8">
+            <section class="text-center mb-16 fade-in">
+                <h1 class="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+                    How can we help you today?
+                </h1>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Find answers, explore our knowledge base, or challenge yourself with our quiz
+                </p>
+            </section>
+
+            <!-- FAQ Section -->
+            <section id="faq" class="mb-16 max-w-4xl mx-auto fade-in">
+                <h2 class="text-2xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
+                <div class="grid gap-6 md:grid-cols-2">
+                    <div class="hover-card bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="font-semibold text-lg mb-2 text-blue-600">How do I create an account?</h3>
+                        <p class="text-gray-600">Click the "Sign Up" button in the top right corner and follow the simple registration process. You'll need a valid email address.</p>
+                    </div>
+                    <div class="hover-card bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="font-semibold text-lg mb-2 text-blue-600">What are the shipping options?</h3>
+                        <p class="text-gray-600">We offer standard (3-5 days), express (1-2 days), and same-day delivery options depending on your location.</p>
+                    </div>
+                    <div class="hover-card bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="font-semibold text-lg mb-2 text-blue-600">How do returns work?</h3>
+                        <p class="text-gray-600">Initiate returns within 30 days of purchase. Free returns on all eligible items with our prepaid shipping label.</p>
+                    </div>
+                    <div class="hover-card bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="font-semibold text-lg mb-2 text-blue-600">Payment Methods</h3>
+                        <p class="text-gray-600">We accept credit/debit cards, QRIS, bank transfers, and digital wallets for your convenience.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quiz Section -->
+            <section class="mb-16 max-w-4xl mx-auto fade-in" x-data="quizGame()" x-init="init()">
+                <h2 class="text-2xl font-bold mb-8 text-center">Test Your ShopNow Knowledge</h2>
+                
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-6">
+                        <div class="progress-bar bg-blue-600 h-2 rounded-full" :style="`width: ${(currentQuestion + 1) / questions.length * 100}%`"></div>
+                    </div>
+        
+                    <template x-if="!gameOver">
+                        <div class="space-y-6">
+                            <div class="text-center">
+                                <span class="text-sm text-gray-500">Question <span x-text="currentQuestion + 1"></span> of <span x-text="questions.length"></span></span>
+                                <h3 class="text-xl font-semibold mt-2" x-text="questions[currentQuestion].question"></h3>
+                            </div>
+        
+                            <div class="grid gap-4">
+                                <template x-for="(answer, index) in shuffledAnswers" :key="index">
+                                    <button
+                                        @click="checkAnswer(index)"
+                                        class="quiz-option w-full p-4 text-left rounded-lg border-2 border-gray-200 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        x-text="answer">
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+        
+                    <template x-if="gameOver">
+                        <div class="text-center space-y-6">
+                            <div class="mb-8">
+                                <h3 class="text-2xl font-bold" x-text="gameResultMessage"></h3>
+                                <p class="text-gray-600 mt-2">Final Score: <span x-text="score"></span> / <span x-text="questions.length"></span></p>
+                            </div>
+                            <button 
+                                @click="restartGame"
+                                class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                                Try Again
+                            </button>
+                        </div>
+                    </template>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact" class="max-w-4xl mx-auto text-center fade-in">
+                <h2 class="text-2xl font-bold mb-8">Still Need Help?</h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="hover-card bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="font-semibold text-lg mb-2 text-blue-600">Email Support</h3>
+                        <a href="mailto:support@shopnow.com" class="text-gray-600 hover:text-blue-600">support@shopnow.com</a>
+                    </div>
+                    <div class="hover-card bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="font-semibold text-lg mb-2 text-blue-600">Phone Support</h3>
+                        <a href="tel:+1234567890" class="text-gray-600 hover:text-blue-600">+1 (234) 567-890</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer Section -->
+        <footer class="w-full bg-gradient py-12 mt-16">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 px-6 lg:px-0 text-center md:text-left text-gray-900">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">About ShopNow</h3>
+                    <p class="text-sm text-gray-700">ShopNow is your one-stop shop for all things you love. Enjoy seamless shopping with exclusive deals and a wide range of quality products.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Customer Service</h3>
+                    <ul>
+                        <li><a href="#" class="text-sm text-gray-700 hover:underline">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul>
+                        <li><a href="#" class="text-sm text-gray-700 hover:underline">Abount Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Stay Connected</h3>
+                    <div class="flex justify-center md:justify-start space-x-4">
+                        <a href="#" aria-label="Facebook" class="text-gray-700 hover:text-indigo-500">
+                            <img src="assets/facebook-app-symbol-removebg-preview.png" alt="Facebook" class="w-6 h-6">
+                        </a>
+                        <a href="#" aria-label="Twitter" class="text-gray-700 hover:text-indigo-500">
+                            <img src="assets/twitter-removebg-preview.png" alt="Twitter" class="w-6 h-6">
+                        </a>
+                        <a href="#" aria-label="Instagram" class="text-gray-700 hover:text-indigo-500">
+                            <img src="assets/instagram-removebg-preview.png" alt="Instagram" class="w-6 h-6">
+                        </a>
+                        <a href="#" aria-label="LinkedIn" class="text-gray-700 hover:text-indigo-500">
+                            <img src="assets/linkedin-removebg-preview.png" alt="LinkedIn" class="w-6 h-6">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 text-center text-sm text-gray-600">
+                &copy; 2024 ShopNow. All rights reserved.
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function quizGame() {
+            return {
+                currentQuestion: 0,
+                score: 0,
+                gameOver: false,
+                gameResultMessage: '',
+                shuffledAnswers: [],
+                questions: [
+                    {
+                        question: "What payment methods do we accept?",
+                        answers: ["Credit cards only", "Credit and debit cards", "Credit, debit, and QRIS", "QRIS only"],
+                        correctAnswer: 2
+                    },
+                    {
+                        question: "How long is our return policy?",
+                        answers: ["15 days", "30 days", "60 days", "No returns allowed"],
+                        correctAnswer: 1
+                    },
+                    {
+                        question: "Where can you track your order?",
+                        answers: ["In your email", "On our website", "By calling support", "All of the above"],
+                        correctAnswer: 3
+                    },
+                    {
+                        question: "Which shipping method is fastest?",
+                        answers: ["Standard shipping", "Express shipping", "Same-day delivery", "International shipping"],
+                        correctAnswer: 2
+                    },
+                    {
+                        question: "What's the minimum purchase for free shipping?",
+                        answers: ["$30", "$50", "$75", "$100"],
+                        correctAnswer: 1
+                    },
+                    {
+                        question: "How can you contact customer service?",
+                        answers: ["Email only", "Phone only", "Chat only", "Email, phone, and chat"],
+                        correctAnswer: 3
+                    },
+                    {
+                        question: "What's our price match policy?",
+                        answers: ["We don't match prices", "Match only local stores", "Match any verified price", "Match online stores only"],
+                        correctAnswer: 2
+                    },
+                    {
+                        question: "How long do refunds typically take?",
+                        answers: ["1-2 days", "3-5 business days", "7-10 business days", "14 business days"],
+                        correctAnswer: 1
+                    }
+                ],
+
+                init() {
+                    this.shuffleQuestions();
+                    this.updateShuffledAnswers();
+                },
+
+                shuffleQuestions() {
+                    for (let i = this.questions.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [this.questions[i], this.questions[j]] = [this.questions[j], this.questions[i]];
+                    }
+                },
+
+                updateShuffledAnswers() {
+                    const currentAnswers = [...this.questions[this.currentQuestion].answers];
+                    for (let i = currentAnswers.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [currentAnswers[i], currentAnswers[j]] = [currentAnswers[j], currentAnswers[i]];
+                    }
+                    this.shuffledAnswers = currentAnswers;
+                },
+
+                checkAnswer(selectedIndex) {
+                    const correctAnswer = this.questions[this.currentQuestion].correctAnswer;
+                    const selectedAnswer = this.questions[this.currentQuestion].answers.indexOf(this.shuffledAnswers[selectedIndex]);
+                    
+                    if (selectedAnswer === correctAnswer) {
+                        this.score++;
+                    }
+
+                    if (this.currentQuestion < this.questions.length - 1) {
+                        this.currentQuestion++;
+                        this.updateShuffledAnswers();
+                    } else {
+                        this.endGame();
+                    }
+                },
+
+                endGame() {
+                    this.gameOver = true;
+                    const percentage = (this.score / this.questions.length) * 100;
+                    
+                    if (percentage === 100) {
+                        this.gameResultMessage = "Perfect Score! 🎉 You're a ShopNow Expert!";
+                    } else if (percentage >= 80) {
+                        this.gameResultMessage = "Excellent Work! 🌟 Almost Perfect!";
+                    } else if (percentage >= 60) {
+                        this.gameResultMessage = "Good Job! 💪 Keep Learning!";
+                    } else {
+                        this.gameResultMessage = "Thanks for Playing! 📚 Try Again to Improve!";
+                    }
+                },
+
+                restartGame() {
+                    this.currentQuestion = 0;
+                    this.score = 0;
+                    this.gameOver = false;
+                    this.gameResultMessage = '';
+                    this.shuffleQuestions();
+                    this.updateShuffledAnswers();
+                }
+            };
+        }
+    </script>
+</body>
+</html>
