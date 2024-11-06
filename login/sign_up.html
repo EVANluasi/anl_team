@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopNow - Sign Up</title>
+    <link rel="icon" href="assets/anl-team-removebg-preview.png" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.3/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @layer utilities {
+            .bg-gradient {
+                background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+            }
+            .card3D {
+                position: relative;
+                perspective: 1000px;
+            }
+            .card3D .inner-card {
+                transition: transform 0.3s;
+                transform-style: preserve-3d;
+            }
+            .card3D:hover .inner-card {
+                transform: rotateY(10deg) rotateX(10deg) scale(1.05);
+                box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+            }
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gradient font-sans text-gray-900 fade-in" x-data="signUpPage()" x-init="init()">
+
+    <!-- Main Container -->
+    <div class="min-h-screen flex flex-col items-center justify-center" x-show="true" x-transition>
+
+        <!-- Sign Up Form Section -->
+        <section class="w-full max-w-md p-8 mt-6 bg-white rounded-lg shadow-lg transform transition-all duration-500 ease-in-out hover:scale-105 fade-in">
+            <h2 class="text-2xl font-semibold text-center text-indigo-600 mb-6">Create Your Account</h2>
+
+            <!-- Sign Up Form -->
+            <form @submit.prevent="submitSignUp">
+                <div class="mb-4">
+                    <label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label>
+                    <input type="text" id="fullName" x-model="fullName" required placeholder="Enter your full name" class="w-full p-3 mt-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                    <input type="email" id="email" x-model="email" required placeholder="Enter your email" class="w-full p-3 mt-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="password" x-model="password" required placeholder="Enter your password" class="w-full p-3 mt-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+
+                <div class="mb-4">
+                    <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                    <input type="password" id="confirmPassword" x-model="confirmPassword" required placeholder="Confirm your password" class="w-full p-3 mt-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+
+                <div class="flex items-center mb-6">
+                    <input type="checkbox" id="terms" x-model="terms" required class="h-4 w-4 text-indigo-600 focus:ring-indigo-500">
+                    <label for="terms" class="ml-2 text-sm text-gray-700">I agree to the <a href="#" @click.prevent="openModal = true" class="text-indigo-600 hover:underline">Terms & Conditions</a></label>
+                </div>
+
+                <button type="submit" class="w-full py-3 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition duration-200">Sign Up</button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">Already have an account? <a href="/public/login.html" class="text-indigo-600 hover:underline">Login</a></p>
+            </div>
+        </section>
+
+        <!-- Modal for Terms & Conditions -->
+        <div x-show="openModal" x-transition:enter="transition ease-out duration-500"
+             x-transition:enter-start="opacity-0 transform scale-90"
+             x-transition:enter-end="opacity-100 transform scale-100"
+             x-transition:leave="transition ease-in duration-300"
+             x-transition:leave-start="opacity-100 transform scale-100"
+             x-transition:leave-end="opacity-0 transform scale-90"
+             class="fixed inset-0 z-50 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+            <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
+                <h3 class="text-xl font-semibold text-indigo-600 mb-4">Terms & Conditions</h3>
+                <p class="text-sm text-gray-700 mb-4">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum.
+                    Integer tincidunt massa ut ipsum luctus, at vulputate felis sollicitudin.
+                    <br><br>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum. Integer tincidunt massa ut ipsum luctus.
+                    <br><br>
+                    By signing up, you agree to these terms and conditions.
+                </p>
+                <button @click="openModal = false" class="w-full py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700">Close</button>
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+        function signUpPage() {
+            return {
+                fullName: '',
+                email: '',
+                password: '',
+                confirmPassword: '',
+                terms: false,
+                openModal: false,
+
+                init() {
+                    // Tambahan
+                },
+
+                submitSignUp() {
+                    if (this.password !== this.confirmPassword) {
+                        alert("Passwords do not match");
+                        return;
+                    }
+                    if (!this.terms) {
+                        alert("You must agree to the terms and conditions");
+                        return;
+                    }
+
+                    alert(`Full Name: ${this.fullName}\nEmail: ${this.email}\nPassword: ${this.password}`);
+                    }
+            };
+        }
+    </script>
+
+</body>
+</html>

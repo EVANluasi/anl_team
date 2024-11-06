@@ -22,6 +22,51 @@
         .welcome-message {
             transition: opacity 0.6s ease-in-out;
         }
+
+        /* Desktop-specific styles */
+        @media (min-width: 769px) {
+            .form-container {
+                position: absolute;
+                width: 50%;
+            }
+            .overlay {
+                display: flex;
+            }
+        }
+
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            .form-container {
+                position: static;
+                width: 100%;
+            }
+            .overlay {
+                display: none;
+            }
+            .form {
+                padding: 2rem;
+            }
+            .form h2 {
+                font-size: 1.5rem;
+            }
+            .form input, .form button {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+            .welcome-message {
+                margin-top: 1.5rem;
+            }
+        }
+
+        /* General button styling for mobile */
+        .form button {
+            font-size: 1rem;
+        }
+
+        /* Adjust input field styling for both devices */
+        .form input {
+            font-size: 1rem;
+        }
     </style>
 </head>
 <body class="font-sans bg-[#f6f5f7] flex justify-center items-center min-h-screen">
